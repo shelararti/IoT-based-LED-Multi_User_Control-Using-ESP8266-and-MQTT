@@ -1,99 +1,116 @@
-# 💡 IoT-Based Voice-Controlled LED System using ESP8266, MQTT, Adafruit IO, and Google Assistant
+# 💡 Voice-Controlled LED System using ESP8266, MQTT, Adafruit IO & Google Assistant
 
-This project lets you control an LED **with your voice** using **Google Assistant**. The system uses **ESP8266** with **MQTT protocol**, and bridges Google Assistant to the ESP8266 via **Adafruit IO** and **IFTTT**. It’s a fun and practical example of IoT + smart home integration.
+This IoT project allows you to control an LED **with your voice** using **Google Assistant**. It integrates **ESP8266**, **Adafruit IO**, **IFTTT**, and the **MQTT protocol** to build a smart, voice-responsive system.
 
 ---
 
 ## 🚀 System Architecture
 
-```text
 Google Assistant
-     ⬇
-   IFTTT Webhook
-     ⬇
- Adafruit IO Feed (MQTT Broker)
-     ⬇
-   ESP8266 (Subscribes to Feed)
-     ⬇
-   LED (ON/OFF)
+↓
+IFTTT Webhook
+↓
+Adafruit IO (MQTT Broker)
+↓
+ESP8266 (MQTT Client)
+↓
+LED (ON/OFF)
 
-🔧 Hardware Requirements
-ESP8266 NodeMCU
+## 🔧 Hardware Requirements
 
-1x LED
+- ESP8266 NodeMCU
+- 1× LED
+- 1× 220Ω Resistor
+- Breadboard + Jumper wires
+- Stable Wi-Fi connection
 
-1x 220Ω resistor
+---
 
-Jumper wires + breadboard
+## 🔌 Circuit Diagram (Textual Overview)
 
-Wi-Fi connection
-
-🔌 Circuit Diagram (Text Overview)
-
-ESP8266 GPIO (D1) → Resistor (220Ω) → LED (Anode)
+ESP8266 GPIO (D1) → 220Ω Resistor → LED (Anode)
 LED (Cathode) → GND
 
-🧠 How It Works
-ESP8266 connects to Wi-Fi and subscribes to an Adafruit IO feed.
 
-IFTTT listens for voice commands via Google Assistant.
+---
 
-When triggered, IFTTT sends a value (ON or OFF) to Adafruit IO.
+## 🧠 How It Works
 
-The ESP8266 receives that value and turns the LED ON or OFF.
+1. ESP8266 connects to your Wi-Fi and subscribes to a specific Adafruit IO MQTT feed.
+2. Google Assistant listens to your voice commands.
+3. IFTTT intercepts these commands and sends a webhook to Adafruit IO.
+4. Adafruit IO updates the MQTT feed with a value (`ON` or `OFF`).
+5. ESP8266 reads this value and toggles the LED accordingly.
 
-📄 Arduino File
-LED_BLINK_USER2.ino: Contains the full implementation.
+---
 
-Replace the following:
+## 📄 Arduino Code
 
-Your Wi-Fi SSID and password
+Upload the `Main.ino` file using Arduino IDE.
 
-Adafruit IO username
+### 🔧 Replace the following in the sketch:
 
-Adafruit IO AIO Key
+- Your Wi-Fi SSID and Password
+- Your Adafruit IO Username
+- Your Adafruit IO AIO Key
+- Your Feed Name (e.g., `voice-led`)
 
-Your feed name (e.g., voice-led)
+---
 
-🛠 Libraries Required
-Make sure you install the following in Arduino IDE:
+## 🛠 Required Libraries
 
-ESP8266 board support (via Boards Manager)
+Install the following via Arduino IDE:
 
-WiFi.h
+- ESP8266 Board (via Boards Manager)
+- `WiFi.h`
+- `Adafruit_MQTT.h`
+- `Adafruit_MQTT_Client.h`
 
-Adafruit_MQTT.h
+---
 
-Adafruit_MQTT_Client.h
+## 🎤 Voice Commands (Via IFTTT)
 
-🎤 Sample Voice Commands (via IFTTT)
-“Hey Google, turn on the LED”
+- “Hey Google, turn on the LED”
+- “Hey Google, turn off the LED”
 
-“Hey Google, turn off the LED”
+Each command triggers a corresponding IFTTT applet.
 
-Each command triggers an IFTTT applet that updates your Adafruit IO feed.
+---
 
-🧪 IFTTT Configuration
-Trigger: Google Assistant → Say a phrase
+## ⚙️ IFTTT Configuration
 
-Action: Webhooks → Send data to Adafruit IO
+1. **Trigger**  
+   - Service: Google Assistant  
+   - Event: Say a simple phrase  
 
-URL: https://io.adafruit.com/api/v2/<USERNAME>/feeds/<FEED_NAME>/data
+2. **Action**  
+   - Service: Webhooks  
+   - URL: `https://io.adafruit.com/api/v2/<USERNAME>/feeds/<FEED_NAME>/data`  
+   - Method: `POST`  
+   - Content-Type: `application/x-www-form-urlencoded`  
+   - Body: `value=ON` or `value=OFF`  
 
-Method: POST
+3. **Authentication**  
+   - Add your **Adafruit IO AIO Key** in the webhook header.
 
-Body: value=ON or value=OFF
+---
 
-Headers: Content-Type: application/x-www-form-urlencoded
+## 💡 Use Cases
 
-Add your AIO Key in the IFTTT Webhook setup
+- Smart home lighting control
+- Voice-activated gadgets
+- IoT learning and prototyping
+- Accessible tech solutions
 
-💡 Real-World Use Cases
-Home automation (lights, fans)
+---
 
-Voice-controlled gadgets
 
-IoT learning projects
+## 🤝 Credits
 
-🤝 Credits
-Made with ❤️ by Arti Shelar
+Made with ❤️ by **Arti Shelar and Team**
+
+---
+
+## 📜 License
+
+This project is open-source and free to use under the MIT License.
