@@ -29,6 +29,7 @@ LED (ON/OFF)
 ## 🔌 Circuit Diagram (Textual Overview)
 
 ESP8266 GPIO (D1) → 220Ω Resistor → LED (Anode)
+
 LED (Cathode) → GND
 
 
